@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * <p>
@@ -47,7 +48,7 @@ public class ShopTypeServiceImpl extends ServiceImpl<ShopTypeMapper, ShopType> i
             return Result.fail("类型不存在");
         }
         //5.存在，存入redis 返回
-        redisTemplate.opsForValue().set(key,JSONUtil.toJsonStr(list));
+        redisTemplate.opsForValue().set(key,JSONUtil.toJsonStr(list), RedisConstants.CACHE_SHOP_TTL, TimeUnit.MINUTES);
         return Result.ok(list);
     }
 }
